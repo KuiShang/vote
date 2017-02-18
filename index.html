@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+<h2>投票插件，暂时没有优化代码，有用到的时候再优化。！</h2>
+   <!-- 1 html代码可以不用自动生成，按照bootstrap组件思路，只要规定好最外层钩子，和每个条目的钩子就好-->
+
+<div id="kk_volt">
+
+</div>
+
+<button id="btn">提交托票结果</button>
+</body>
+<script>
+    (function () {
+
+        var arr = ['码匠A', '码匠B', '码匠C', '码匠D'];
+
+        var con = document.querySelector('#kk_volt');
+
+        function init(num) {
+            for (var i = 0; i < num; i++) {
+                con.innerHTML += '<form><label for="">' + arr[i] + ' 投票人数：</label><input type="text" name="" id=""><b>数值上限500</b></form><div><strong>投票占比：</strong><em class="color-block"></em><span class="result"></span></div>';
+            }
+
+        };
+        init(4);
+        var putIns = con.querySelectorAll('input');//每一个输入框
+        // 这段是控制功能增加的东西
+        for (var i = 0; i < putIns.length; i++) {
+            putIns[i].judge = 1;
+            putIns[i].onblur = function () {
+                var val = Number(this.value);
+                if (val != val || this.value == '' || val > 500) {
+                    this.style.borderColor = '#f00';
+                    this.judge = 1;
+                } else {
+                    this.style.borderColor = '#ccc';
+                    this.judge = 0;
+                }
+            }
+        }
+        ;
+
+        document.querySelector('#btn').onclick = function () {
+
+            var sum = 0;
+            var vals = [];
+
+            //this.style.background = '#ccc';
+            for (var i = 0; i < putIns.length; i++) {
+                vals[i] = parseInt(putIns[i].value);
+                sum += vals[i];
+            }
+            ;
+            var results = con.querySelectorAll('.result');
+            var prog = con.querySelectorAll('em');
+            for (var i = 0; i < results.length; i++) {
+                // 第四步变形 - 增加进度条
+                var percent = vals[i] / sum * 100;
+                console.log(percent);
+
+                prog[i].targetVal = (Math.round(percent) <= 1 ? 1 : Math.round(percent));
+                prog[i].style.width = percent.toFixed(2) * 4 + 'px';
+                prog[i].style.backgroundColor = '#' + ('00000' + (Math.random() * 0x1000000 << 0).toString(16)).slice(-6);
+                results[i].innerHTML = percent.toFixed(2) + '%';
+            }
+        };
+    })()
+
+</script>
+</html>

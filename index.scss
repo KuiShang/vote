@@ -1,0 +1,9 @@
+@charset "UTF-8";
+.color-block{
+  display: inline-block;
+  width: 0px;
+  height:20px;
+  background-color: #ccc;
+  opacity:.7;
+  transition: all, 0.2s linear;
+}
